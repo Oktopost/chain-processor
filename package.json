@@ -1,0 +1,19 @@
+{
+  "name": "chain-processor",
+  "version": "0.0.1",
+  "description": "Add processors before and after an execution of a single Promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oktopost/chain-processor.git"
+  },
+  "author": "Alexey Puchkov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Oktopost/chain-processor/issues"
+  },
+  "homepage": "https://github.com/Oktopost/chain-processor#readme"
+}

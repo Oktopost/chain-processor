@@ -1,15 +1,7 @@
 'use strict';
 
 
-export default class ChainSetup {
-
-	/**
-	 * @type {[function(Chain)]}
-	 * @private
-	 */
-	_decorators;
-
-
+class ChainSetup {
 	/**
 	 * @param {[function(Chain)]} clone
 	 */
@@ -34,3 +26,6 @@ export default class ChainSetup {
 		return new ChainSetup(this._decorators);
 	}
 }
+
+
+module.export = ChainSetup;
