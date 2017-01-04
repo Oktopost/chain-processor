@@ -8,18 +8,17 @@ const RESULT_PRE_PROCESSOR = 3;
 const RESULT_POST_PROCESSOR = 4;
 
 
-export default class Chain {
+module.exports = class Chain {
 	
-	/**
-	 * @private
-	 */
-	_chain = [
-		[], // REQUEST_PRE_PROCESSOR
-		[], // REQUEST_POST_PROCESSOR
-		[], // PROCESSOR
-		[], // RESULT_PRE_PROCESSOR
-		[]  // RESULT_POST_PROCESSOR
-	];
+	constructor() {
+		this._chain = [
+			[], // REQUEST_PRE_PROCESSOR
+			[], // REQUEST_POST_PROCESSOR
+			[], // PROCESSOR
+			[], // RESULT_PRE_PROCESSOR
+			[]  // RESULT_POST_PROCESSOR
+		];
+	}
 
 
 	/**
@@ -30,8 +29,8 @@ export default class Chain {
 	 */
 	static _reduceChainPart(initialPromise, chainPart) {
 		return chainPart.reduce(
-			(prevPromise, method) => method(prevPromise), 
-			initialPromise)
+			(prevPromise, method) => method(prevPromise),
+			initialPromise);
 	}
 	
 	/**
@@ -88,6 +87,6 @@ export default class Chain {
 	 */
 	execute(args) {
 		let initialPromise = new Promise((resolve) => resolve(args));
-		return this._chain.reduce(this._reduceChainPart, initialPromise);
+		return this._chain.reduce(Chain._reduceChainPart, initialPromise);
 	}
-}
+};
