@@ -1,10 +1,11 @@
 'use strict';
 
 
-let Chain = require('./chain.js');
+const Chain = require('./chain.js');
 
 
-class ChainSetup {
+module.exports = class ChainSetup {
+	
 	/**
 	 * @param {[function(Chain)]} clone
 	 */
@@ -38,9 +39,4 @@ class ChainSetup {
 		this._decorators.forEach((decorator) => decorator(chain));
 		return chain.execute(args);
 	}
-};
-
-
-module.exports = {
-	ChainSetup,
 };

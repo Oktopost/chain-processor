@@ -4,7 +4,7 @@
   "description": "Add processors before and after an execution of a single Promise",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/Oktopost/chain-processor/issues"
   },
-  "homepage": "https://github.com/Oktopost/chain-processor#readme"
+  "homepage": "https://github.com/Oktopost/chain-processor#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {}
 }

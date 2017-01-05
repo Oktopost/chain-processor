@@ -9,3 +9,6 @@
 
 # Test objects
 test.js
+
+# Node modules
+/node_modules

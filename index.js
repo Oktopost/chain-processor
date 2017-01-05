@@ -1,8 +1,8 @@
 'use strict';
 
 
-let Chain = require('./chain.js');
-let ChainSetup = require('./chainSetup.js');
+const Chain = require('./src/chain.js');
+const ChainSetup = require('./src/chainSetup.js');
 
 
 module.exports = {
