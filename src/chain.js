@@ -1,26 +1,30 @@
 'use strict';
 
 
-const REQUEST_PRE_PROCESSOR = 0;
-const REQUEST_POST_PROCESSOR = 1;
-const PROCESSOR = 2;
-const RESULT_PRE_PROCESSOR = 3;
-const RESULT_POST_PROCESSOR = 4;
+const REQUEST_PRE_PROCESSOR = 100;
+const REQUEST_POST_PROCESSOR = 200;
+const PROCESSOR = 300;
+const RESULT_PRE_PROCESSOR = 400;
+const RESULT_POST_PROCESSOR = 500;
 
 
 module.exports = class Chain {
 	
 	constructor() {
-		this._chain = [
-			[], // REQUEST_PRE_PROCESSOR
-			[], // REQUEST_POST_PROCESSOR
-			[], // PROCESSOR
-			[], // RESULT_PRE_PROCESSOR
-			[]  // RESULT_POST_PROCESSOR
-		];
+		this._chain = {};
 	}
 
-
+		
+	/**
+	 * @param {Promise} initialPromise
+	 * @param {number} key
+	 * @returns {Promise}
+	 * @private
+	 */
+	_reduceChainByKey(initialPromise, key) {
+		return Chain._reduceChainPart(initialPromise, this._chain[key])
+	}
+	
 	/**
 	 * @param {Promise} initialPromise
 	 * @param {[function(Promise): Promise]} chainPart
@@ -33,51 +37,54 @@ module.exports = class Chain {
 			initialPromise);
 	}
 	
+	
 	/**
 	 * @param {Number} key
-	 * @param {function(Promise): Promise} value
+	 * @param {function(Promise): Promise} method
 	 * @returns {Chain}
-	 * @private
 	 */
-	_add(key, value) {
-		this._chain[key].push(value);
-		return this;
-	}
+	register(key, method) {
+		if (typeof this._chain.key === 'undefined') {
+			this._chain[key] = [];
+		}
 		
+		this._chain[key].push(method);
+		return this;
+	}	
 
 	/**
 	 * @param {function(Promise): Promise} method
 	 */
 	requestPreProcessor(method) {
-		return this._add(REQUEST_PRE_PROCESSOR, method);
+		return this.register(REQUEST_PRE_PROCESSOR, method);
 	}
 	
 	/**
 	 * @param {function(Promise): Promise} method
 	 */
 	requestPostProcessor(method) {
-		return this._add(REQUEST_POST_PROCESSOR, method);
+		return this.register(REQUEST_POST_PROCESSOR, method);
 	}
 	
 	/**
 	 * @param {function(Promise): Promise} method
 	 */
 	processor(method) {
-		return this._add(PROCESSOR, method);
+		return this.register(PROCESSOR, method);
 	}
 	
 	/**
 	 * @param {function(Promise): Promise} method
 	 */
 	resultPreProcessor(method) {
-		return this._add(RESULT_PRE_PROCESSOR, method);
+		return this.register(RESULT_PRE_PROCESSOR, method);
 	}
 	
 	/**
 	 * @param {function(Promise): Promise} method
 	 */
 	resultPostProcessor(method) {
-		return this._add(RESULT_POST_PROCESSOR, method);
+		return this.register(RESULT_POST_PROCESSOR, method);
 	}
 	
 	
@@ -86,7 +93,11 @@ module.exports = class Chain {
 	 * @returns {Promise.<*>}
 	 */
 	execute(args) {
-		let initialPromise = new Promise((resolve) => resolve(args));
-		return this._chain.reduce(Chain._reduceChainPart, initialPromise);
+		Object.keys(this._chain)
+			.sort()
+			.reduce(
+				this._reduceChainByKey.bind(this),
+				new Promise((resolve) => resolve(args))
+			);
 	}
 };

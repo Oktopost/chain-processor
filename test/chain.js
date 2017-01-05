@@ -44,6 +44,15 @@ describe('Chain', function() {
 				chain.resultPostProcessor(function (p) { return p; } )
 			);
 		});
+		
+		it('register should return self', function () {
+			let chain = new Chain();
+			
+			assert.equal(
+				chain,
+				chain.register(1, function (p) { return p; } )
+			);
+		});
 	});
 	
 });
